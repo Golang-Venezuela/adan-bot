@@ -1,6 +1,5 @@
 # WIP !!! 🏗️🤖
-
-[x] Hola Mundo
+  - [x] Hola Mundo
 
 ### Fetures 
 
