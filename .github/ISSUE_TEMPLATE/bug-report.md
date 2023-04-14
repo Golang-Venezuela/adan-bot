@@ -14,7 +14,7 @@ Pasos para reproducir el comportamiento:
 
 1. Ir a '...'
 2. Click en '....'
-3. Scroll haci '....'
+3. Scroll hacia '....'
 4. Mirar error
 
 **Comportamiento Esperado**

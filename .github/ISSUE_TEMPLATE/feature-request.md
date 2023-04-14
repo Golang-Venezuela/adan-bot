@@ -8,8 +8,8 @@ assignees: ""
 
 ---
 
-**Why**
-Why is this change necessary? What is this solving/improving? What feature is it helping us to build?
+**Porque**
+Porque este cambio es necesario, que solucionamos con este cambio.
 
-**What**
-What exactly is necessary for this change?
+**Que**
+Que se necesita para este cambio?
