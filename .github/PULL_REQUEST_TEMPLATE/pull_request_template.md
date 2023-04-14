@@ -1,22 +1,23 @@
-## Descripcion 
-Por favor incluya una breve descripcion de lo que quiere cambiar y cual issue(s) esta arreglando.
+## Description
+
+Please include a summary of the change and which issue(s) is/are fixed.
 
 Fixes: # (issue)
 
 ## Testing
 
-Describa los pasos necesarios para probar este PR.
+Please provide the steps for testing this PR.
 
 ---
 
-## Detalles Adicionales (Opcional)
+## Additional Details (Optional)
 
-Agregue mas detalles.
+For additional details.
 
-## Reviews (Opcional)
+## Reviews (Optional)
 
-Mencione a un developer(s) que te gustaria que revisara los cambios propuestos. Esto es recomendable cuando nuestro codigo va a ser usado en un gran componente o modifica funcionalidades core, o modifica un componente existente que es usado en muchos lugares del codigo.
+Please mention developer(s) who should definitely review this change. Use this when your code would be used by a larger component or modifies core functionality or modifies an existing component being used in a lot of places etc.
 
-## Screenshots (Opcional)
+## Screenshots (Optional)
 
-Por favor agregue capturas de pantalla si asi lo requiere.
+Please attach screenshots if required.

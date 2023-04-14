@@ -1,15 +1,13 @@
 ---
-
-name: Feature Go Venezuela
-about: Feature Go Venezuela
-title: ""
-labels: ""
-assignees: ""
-
+name: Request Feature Go Venezuela
+about: Request Feature Go Venezuela
+title: ''
+labels: ''
+assignees: ''
 ---
 
-**Porque**
-Porque este cambio es necesario, que solucionamos con este cambio.
+**Why**
+Why is this change necessary? What is this solving/improving? What feature is it helping us to build?
 
-**Que**
-Que se necesita para este cambio?
+**What**
+What exactly is necessary for this change?

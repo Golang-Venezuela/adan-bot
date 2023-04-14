@@ -6,22 +6,22 @@ labels: bug P?
 assignees: ''
 ---
 
-**Descripcion del bug**
-Describe claramente este bug.
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-**Reproducir**
-Pasos para reproducir el comportamiento:
+**To Reproduce**
+Steps to reproduce the behavior:
 
-1. Ir a '...'
-2. Click en '....'
-3. Scroll hacia '....'
-4. Mirar error
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-**Comportamiento Esperado**
-Agrega una descripcion concisa de lo que deberia pasar en condiciones normales, o cual deberia dser el resultado esperado.
+**Expected behavior**
+A clear and concise description of what you expected to happen.
 
 **Screenshots**
-Si es necesario agrega screenshots, u otro elemento multimedia, para describir mejor el comportamiento observado.
+If applicable, add screenshots to help explain your problem.
 
-**Contexto Adicional**
-Agregar informacion extra, acerca de tu entorno. (SO/Browser/Otra informacion relevante)
+**Additional context**
+Add any other context about the problem here. (OS/Browser/Any other information)
