@@ -1,5 +1,5 @@
 ---
-name: Request Feature Go Venezuela
+name: "Request Feature Go Venezuela \U0001F680"
 about: Request Feature Go Venezuela
 title: ''
 labels: ''
