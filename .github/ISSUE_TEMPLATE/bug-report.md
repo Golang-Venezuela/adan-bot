@@ -1,5 +1,5 @@
 ---
-name: Bug Report Go Venezuela
+name: "Bug Report Go Venezuela \U0001F41E"
 about: Bug Report Go Venezuela
 title: ''
 labels: bug P?
