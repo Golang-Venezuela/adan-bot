@@ -28,8 +28,8 @@ jobs:
       uses: yanzay/notify-telegram@v0.1.0
       if : always()
       with:
-        chat: ${{ secrets.CHAT }}
-        token: ${{ secrets.TOKEN }}
+        chat: ${{ secrets.chat }}
+        token: ${{ secrets.token }}
         status: ${{ job.status }}
     
   
