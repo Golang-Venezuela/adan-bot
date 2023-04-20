@@ -41,9 +41,9 @@ func main() {
 		case "help":
 			msg.Text = "/hola and /status."
 		case "hola":
-			msg.Text = "hola mundo :)"
+			msg.Text = "Hola mi nombre es Adan el Bot 🤖 de la comunidad de Golang Venezuela. Y como la cancion: <<naci en esta ribera del arauca vibrador, soy hermano de la espuma de las garzas de las rosas y del sol.>> "
 		case "status":
-			msg.Text = "I'm ok."
+			msg.Text = "De momento todo esta bien"
 		default:
 			msg.Text = "I don't know that command"
 		}
