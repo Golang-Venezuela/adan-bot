@@ -23,3 +23,13 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Notify Telegram
+      uses: yanzay/notify-telegram@v0.1.0
+      if : always()
+      with:
+        chat: ${{ secrets.CHAT }}
+        token: ${{ secrets.TOKEN }}
+        status: ${{ job.status }}
+    
+  
