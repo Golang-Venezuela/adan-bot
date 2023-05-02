@@ -36,12 +36,12 @@ jobs:
         run: docker build -t adan-bot .
       - name: Docker tags
         run: |
-          docker tag adan-bot golang-ve/adan-bot:${{ github.sha }}
-          docker tag adan-bot golang-ve/adan-bot:latest
+          docker tag adan-bot ${{ secrets.DOCKER_USER }}/adan-bot:${{ github.sha }}
+          docker tag adan-bot ${{ secrets.DOCKER_USER }}/adan-bot:latest
       - name: Docker push
         run: |
-          docker push golang-ve/adan-bot:${{ github.sha }}
-          docker push golang-ve/adan-bot:latest
+          docker push ${{ secrets.DOCKER_USER }}/adan-bot:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USER }}/adan-bot:latest
       - name: Notify Telegram
         uses: yanzay/notify-telegram@v0.1.0
         if : always()
