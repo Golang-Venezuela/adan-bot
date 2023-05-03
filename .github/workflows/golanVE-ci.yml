@@ -42,7 +42,7 @@ jobs:
             ${{ secrets.DOCKER_PASSWORD }}/adan-bot:${{ github.sha }}
             ${{ secrets.DOCKER_PASSWORD }}/adan-bot:latest
         env:
-            TELEGRAM_TOKEN: ${{ secrets.token }}
+            TELEGRAM_TOKEN: ${{ secrets.token }
       - name: Notify Telegram
         uses: yanzay/notify-telegram@v0.1.0
         if : always()
