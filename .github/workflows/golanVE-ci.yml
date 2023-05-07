@@ -51,8 +51,6 @@ jobs:
       - name: Docker build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_USER }}/adan-bot:${{ github.sha }}
