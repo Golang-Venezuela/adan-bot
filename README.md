@@ -8,12 +8,12 @@
 
 <div align="center">
   <a href="https://github.com/Golang-Venezuela/adan-bot">
-    <img src="img/Adan-bot.png" alt="Logo" width="600" height="240">
+    <img src="img/Adan-bot.png" alt="Logo" width="600" height="300">
     <br/>
     <p align="center">
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=bug+P%3F&projects=&template=bug-report.md&title=">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=&projects=&template=feature-request.md&title=">Request Feature</a>
   </p>
 </div>
 
