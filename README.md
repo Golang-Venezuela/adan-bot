@@ -8,7 +8,9 @@
 
 <div align="center">
   <a href="https://github.com/Golang-Venezuela/adan-bot">
-    <img src="img/Adan-bot.png" alt="Logo" width="600" height="240"
+    <img src="img/Adan-bot.png" alt="Logo" width="600" height="240">
+    <br/>
+    <p align="center">
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
