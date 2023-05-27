@@ -63,7 +63,8 @@ Don't forget to give the project a star! Thanks again!
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+5. Update Changelog (`git log --pretty=format:"## [%h] %ad%n- %s%n  Author: %an%n" --date=format:"%Y-%m-%d %H:%M" --decorate > CHANGELOG.md`)
+6. Open a Pull Request
 
 > The contribution section is under construction, we want to elaborate in detail what are the steps and what is the workflow to start contributing to the community.
 
