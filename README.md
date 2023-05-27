@@ -41,7 +41,7 @@ Adan-Bot is the first bot in the community (hence its name) which will evolve un
 - [ ] Notification of new deploy 
 - [ ] Remove and ban users
 
-### - CI/CD 
+### CI/CD 
 - [ ] Add Linter pipeline
 - [ ] Test with coverage (50%)
 
