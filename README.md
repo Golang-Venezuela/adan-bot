@@ -32,16 +32,17 @@ Adan-Bot is the first bot in the community (hence its name) which will evolve un
 ```
 --- 
 ### Features
-  - [x] Hola Mundo.
-  - [ ] Events calendar.
-  - [ ] Structure of the repo.
-  - [ ] Captcha for new users. (ref. join captcha bot)
-  - [ ] Create databases (Validate SurrealDB) with the members of the Group
+- [x] Hola Mundo.
+- [ ] Events calendar.
+- [ ] Structure of the repo.
+- [ ] Captcha for new users. (ref. join captcha bot)
+- [ ] Create databases (Validate SurrealDB) with the members of the Group
 - [ ] Notification to the group when a PR is created
 - [ ] Notification of new deploy 
 - [ ] Remove and ban users
 
 ### CI/CD 
+- [ ] Automatic CHANGELOG 
 - [ ] Add Linter pipeline
 - [ ] Test with coverage (50%)
 
