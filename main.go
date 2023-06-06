@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	APITOKEN := envs.Get("TELEGRAM_APITOKEN", "Token-default")
+	APITOKEN := envs.Get("TELEGRAM_API_TOKEN", "Token-default")
 
 	bot, err := tgbotapi.NewBotAPI(APITOKEN)
 	if err != nil {
