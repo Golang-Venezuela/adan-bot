@@ -20,6 +20,9 @@
 # Go workspace file
 go.work
 
-## env
+# env
 .env
-*.env
+.env.*
+
+# air executable
+tmp/*
