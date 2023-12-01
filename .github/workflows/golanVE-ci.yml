@@ -1,4 +1,5 @@
-name: Golang VE CI on:
+name: Golang VE CI 
+on:
   push:
     branches: [ "main" ]
   pull_request:
