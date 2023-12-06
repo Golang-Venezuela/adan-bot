@@ -1,5 +1,7 @@
-FROM golang:1.21-alpine3.18
-RUN apk add --no-cache ca-certificates gcc make musl-dev
+ARG GO_VERSION=1.21
+
+FROM golang:${GO_VERSION}-alpine3.18
+RUN apk add --no-cache ca-certificates gcc git make musl-dev
 RUN \
   go install github.com/cespare/reflex@v0.3.1 && \
   go install github.com/go-delve/delve/cmd/dlv@v1.21.1 && \

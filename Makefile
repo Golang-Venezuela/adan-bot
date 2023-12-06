@@ -13,7 +13,7 @@ all: build
 
 .PHONY: build
 build:
-	$(GO) build -o ./dist/ -ldflags="-s -w" ./...
+	$(GO) build -ldflags="-s -w" -trimpath -o ./dist/ ./...
 
 .PHONY: build-docker
 build-docker:
