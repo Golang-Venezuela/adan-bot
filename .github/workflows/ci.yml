@@ -49,6 +49,7 @@ jobs:
 
       - name: Notify Telegram
         uses: yanzay/notify-telegram@v0.1.0
+        continue-on-error: true
         if : always()
         with:
           chat: ${{ secrets.chat }}
