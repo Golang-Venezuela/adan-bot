@@ -14,6 +14,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	bot.Debug = true
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
@@ -41,8 +42,12 @@ func main() {
 		case "help":
 			msg.Text = "/hola and /status."
 		case "hola":
-			msg.Text = "Hola mi nombre es Adan el Bot 🤖 de la comunidad de Golang Venezuela. Y como la cancion: <<naci en esta ribera del arauca vibrador, soy hermano de la espuma de las garzas de las rosas y del sol.>> "
+			msg.Text = "Hola mi nombre es Adan el Bot 🤖 de la comunidad de Golang"
+			msg.Text += " Venezuela. Y como la cancion: <<naci en esta ribera del "
+			msg.Text += "arauca vibrador, soy hermano de la espuma de las garzas de "
+			msg.Text += "las rosas y del sol.>> "
 		case "status":
+			//nolint:misspell
 			msg.Text = "De momento todo esta bien"
 		default:
 			msg.Text = "I don't know that command"
