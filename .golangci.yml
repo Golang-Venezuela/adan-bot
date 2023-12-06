@@ -1,0 +1,88 @@
+run:
+  tests: true
+  timeout: 1m
+  skip-dirs: []
+  skip-files: []
+linters:
+  enable-all: true
+  disable:
+    - depguard
+    - exhaustivestruct
+    - exhaustruct
+    - gci
+    - gochecknoglobals
+    - gochecknoinits
+    - gocyclo
+    - godox
+    - goerr113
+    - gofumpt
+    - golint
+    - gomnd
+    - ifshort
+    - interfacer
+    - ireturn
+    - maligned
+    - nlreturn
+    - nonamedreturns
+    - nosnakecase
+    - scopelint
+    - unparam
+    - unused
+    - varnamelen
+linters-settings:
+  cyclop:
+    max-complexity: 10
+    package-average: 10.0
+    skip-tests: true
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  gocognit:
+    min-complexity: 10
+  gocyclo:
+    min-complexity: 10
+  govet:
+    check-shadowing: true
+  lll:
+    line-length: 79
+  misspell:
+    locale: US
+  nestif:
+    min-complexity: 3
+  wsl:
+    strict-append: true
+    allow-assign-and-call: false
+    allow-assign-and-anything: false
+    allow-multiline-assign: false
+    allow-separated-leading-comment: false
+    allow-cuddle-declarations: true
+    allow-case-trailing-whitespace: false
+    allow-trailing-comment: true
+    force-err-cuddling: false
+    force-short-decl-cuddling: false
+issues:
+  exclude-rules:
+    - source: "^//"
+      linters:
+        - lll
+    - path: "^cmd/"
+      linters:
+        - funlen
+        - wrapcheck
+    - path: "^pkg/cmd/"
+      linters:
+        - funlen
+        - wrapcheck
+    - path: "_test\\.go"
+      linters:
+        - cyclop
+        - dupl
+        - dupword
+        - gocognit
+        - goconst
+        - forbidigo
+        - funlen
+        - lll
+        - testpackage
+        - wrapcheck
+
