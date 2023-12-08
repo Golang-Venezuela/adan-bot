@@ -1,0 +1,73 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  ci:
+    name: Integration
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        go_version:
+          - '1.20'
+          - '1.21'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go_version }}
+
+      - name: Set up tools
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2
+
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: make build
+
+      - name: Test
+        run: make test-race
+
+      - name: Coverage
+        run: |
+          make coverage
+          mv coverage-dev.txt coverage.txt
+          bash <(curl -s https://codecov.io/bash)
+
+      - name: Lint
+        run: make lint
+
+      - name: Code Analysis
+        run: make ca
+
+      - name: Notify Telegram
+        uses: yanzay/notify-telegram@v0.1.0
+        continue-on-error: true
+        if : always()
+        with:
+          chat: ${{ secrets.chat }}
+          token: ${{ secrets.token }}
+          status: ${{ job.status }}
+
+  deploy:
+    name: Deployment
+    needs: ci
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: go-ve/adan-bot
+    steps:
+      - name: Get source code
+        uses: actions/checkout@v4
+
+      - name: "Build and push Docker image ('latest')"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker build -t $DOCKER_IMAGE .
+          docker push $DOCKER_IMAGE

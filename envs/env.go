@@ -20,5 +20,6 @@ func Get(key, def string) string {
 	}
 	// log
 	log.Println(key, ": Valor default")
+
 	return def
 }
