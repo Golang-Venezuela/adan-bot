@@ -8,7 +8,7 @@
 
 <div align="center">
   <a href="https://github.com/Golang-Venezuela/adan-bot">
-    <img src="img/Adan-bot.png" alt="Logo" width="600" height="300">
+    <img src="img/Adan-bot.png" alt="Logo" width="1000" height="400">
     <br/>
     <p align="center">
     <a href="https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=bug+P%3F&projects=&template=bug-report.md&title=">Report Bug</a>
@@ -18,17 +18,17 @@
 </div>
 
 ## About The Project
-Adan-Bot is the first bot in the community (hence its name) which will evolve until it has many implicit features, which will make it better and better..
+Adan-Bot is the first bot in the community (hence its name) that will evolve, gradually acquiring numerous implicit features, making it increasingly better.
 ## How to run 
-### 1. Instalar el paquete
+### 1. Instaling package 
 ```go
 > go install github.com/Golang-Venezuela/adan-bot
 ```
-### 2.  Agregar `TELEGRAM_APITOKEN` 
+### 2.  Add `TELEGRAM_APITOKEN` 
     
-### 3. Ejecutar el bot
-```go    
-> go run .\main.go
+### 3. Run bot
+```bash   
+$ go run . main.go
 ```
 --- 
 ### Features
@@ -42,8 +42,9 @@ Adan-Bot is the first bot in the community (hence its name) which will evolve un
 - [ ] Remove and ban users
 
 ### CI/CD 
-- [ ] Automatic CHANGELOG 
-- [ ] Add Linter pipeline
+- [x] Add Contributing sections 
+- [x] Automatic CHANGELOG 
+- [x] Add Linter pipeline
 - [ ] Test with coverage (50%)
 
 ### Built With
@@ -52,21 +53,7 @@ Adan-Bot is the first bot in the community (hence its name) which will evolve un
 - [![telegram-api][telegram-api]][telegram-api-url]
 - [![Docker][Docker-shield]][Docker-url]
 
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Update Changelog (`git log --pretty=format:"## [%h] %ad%n- %s%n  Author: %an%n" --date=format:"%Y-%m-%d %H:%M" --decorate > CHANGELOG.md`)
-6. Open a Pull Request
-
-> The contribution section is under construction, we want to elaborate in detail what are the steps and what is the workflow to start contributing to the community.
+## [Contributing](CONTRIBUTING.md)
 
 ## License
 
