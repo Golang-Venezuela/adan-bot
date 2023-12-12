@@ -75,5 +75,5 @@ jobs:
       - name: "Build and push Docker image to Github Container Registry('latest')"
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          docker build . --tag  ghcr.io/euler-b/$DOCKER_IMAGE:latest 
+          docker build --tag  ghcr.io/euler-b/$DOCKER_IMAGE:latest .
           docker push ghcr.io/euler-b/$DOCKER_IMAGE:latest
