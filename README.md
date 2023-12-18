@@ -1,9 +1,11 @@
+[![telegram-shield][telegram-shield]][telegram-url]
+[![discord-shield][discord-shield]][discord-group-url]
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![telegram-shield][telegram-shield]][telegram-url]
 ![codeQL][codeQL-shield]
 
 <div align="center">
@@ -72,7 +74,7 @@ Distributed under the MIT License. See `LICENSE.md` for more information.
 [issues-url]: https://github.com/Golang-Venezuela/adan-bot/issues
 [license-shield]: https://img.shields.io/github/license/Golang-Venezuela/adan-bot?svghttps://go.dev/
 [license-url]: https://github.com/Golang-Venezuela/adan-bot/blob/main/LICENSE
-[telegram-shield]: https://img.shields.io/badge/Telegram-017cb7?style=flat&logo=Telegram&logoColor=white
+[telegram-shield]: https://img.shields.io/badge/Chat_On-Telegram-017cb7?style=flat&logo=Telegram&logoColor=white
 [telegram-url]: https://t.me/golangve
 [Go]: https://img.shields.io/badge/Go-3498DB?style=flat&logo=Go&logoColor=white
 [Go-url]: https://go.dev/
@@ -81,3 +83,5 @@ Distributed under the MIT License. See `LICENSE.md` for more information.
 [codeQL-shield]: https://github.com/ossf/scorecard/workflows/CodeQL/badge.svg?branch=main
 [Docker-shield]: https://img.shields.io/badge/docker-003f8c?style=flat&logo=docker&logoColor=white
 [Docker-url]: https://www.docker.com/
+[discord-shield]: https://img.shields.io/discord/1160309089792954508
+[discord-group-url]: https://discord.com/channels/1160309089792954508/1160309090250149958
