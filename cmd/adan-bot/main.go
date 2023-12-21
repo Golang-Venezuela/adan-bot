@@ -1,18 +1,28 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
+	"strings"
 
-	"github.com/Golang-Venezuela/adan-bot/envs"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-func main() {
-	APITOKEN := envs.Get("TELEGRAM_API_TOKEN", "Token-default")
+// Errors.
+var (
+	ErrMissingToken = errors.New("missing Telegram API token")
+)
 
-	bot, err := tgbotapi.NewBotAPI(APITOKEN)
-	if err != nil {
-		panic(err)
+func Main() error {
+	APITOKEN := strings.Trim(Getenv("TELEGRAM_API_TOKEN", ""), `"`)
+	if APITOKEN == "" {
+		return ErrMissingToken
+	}
+
+	bot, errNBA := tgbotapi.NewBotAPI(APITOKEN)
+	if errNBA != nil {
+		return fmt.Errorf("cannot connect to Telegram API: %v", errNBA)
 	}
 
 	bot.Debug = true
@@ -33,9 +43,11 @@ func main() {
 			continue
 		}
 
+		chat := update.Message.Chat
+
 		// Create a new MessageConfig. We don't have text yet,
 		// so we leave it empty.
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+		msg := tgbotapi.NewMessage(chat.ID, "")
 
 		// Extract the command from the Message.
 		switch update.Message.Command() {
@@ -54,7 +66,15 @@ func main() {
 		}
 
 		if _, err := bot.Send(msg); err != nil {
-			log.Panic(err)
+			log.Printf("Cannot send message to '%v'", chat.UserName)
 		}
+	}
+
+	return nil
+}
+
+func main() {
+	if err := Profile(Main); err != nil {
+		log.Fatalln(err)
 	}
 }

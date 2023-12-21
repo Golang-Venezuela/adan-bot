@@ -144,11 +144,11 @@ lint:
 
 .PHONY: run
 run:
-	go run ./main.go
+	go run ./cmd/adan-bot/...
 
 .PHONY: run-race
 run-race:
-	go run -race ./main.go
+	go run -race ./cmd/adan-bot/...
 
 .PHONY: test
 test:
