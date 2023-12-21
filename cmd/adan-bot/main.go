@@ -14,6 +14,7 @@ var (
 	ErrMissingToken = errors.New("missing Telegram API token")
 )
 
+//nolint:cyclop,gocognit
 func Main() error {
 	APITOKEN := strings.Trim(Getenv("TELEGRAM_API_TOKEN", ""), `"`)
 	if APITOKEN == "" {
@@ -22,7 +23,7 @@ func Main() error {
 
 	bot, errNBA := tgbotapi.NewBotAPI(APITOKEN)
 	if errNBA != nil {
-		return fmt.Errorf("cannot connect to Telegram API: %v", errNBA)
+		return fmt.Errorf("cannot connect to Telegram API: %w", errNBA)
 	}
 
 	bot.Debug = true

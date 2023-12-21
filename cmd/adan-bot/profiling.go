@@ -11,6 +11,7 @@ import (
 	"strings"
 )
 
+//nolint:cyclop,gocognit,nestif
 func Profile(fn func() error) (err error) {
 	if os.Getenv("TRACE") == "1" {
 		var fname string
@@ -23,18 +24,18 @@ func Profile(fn func() error) (err error) {
 
 		f, err := os.Create(fname)
 		if err != nil {
-			return fmt.Errorf("cannot create trace execution file: %v", err)
+			return fmt.Errorf("cannot create trace execution file: %w", err)
 		}
 
 		defer func() {
 			if errC := f.Close(); errC != nil {
-				errC = fmt.Errorf("cannot close trace execution file: %v", errC)
+				errC = fmt.Errorf("cannot close trace execution file: %w", errC)
 				err = errors.Join(err, errC)
 			}
 		}()
 
 		if err := trace.Start(f); err != nil {
-			return fmt.Errorf("cannot start execution tracing: %v", err)
+			return fmt.Errorf("cannot start execution tracing: %w", err)
 		}
 
 		defer trace.Stop()
@@ -51,18 +52,18 @@ func Profile(fn func() error) (err error) {
 
 		f, err := os.Create(fname)
 		if err != nil {
-			return fmt.Errorf("cannot create cpu profile file: %v", err)
+			return fmt.Errorf("cannot create cpu profile file: %w", err)
 		}
 
 		defer func() {
 			if errC := f.Close(); errC != nil {
-				errC = fmt.Errorf("cannot close cpu profile file: %v", errC)
+				errC = fmt.Errorf("cannot close cpu profile file: %w", errC)
 				err = errors.Join(err, errC)
 			}
 		}()
 
 		if err := pprof.StartCPUProfile(f); err != nil {
-			return fmt.Errorf("cannot profile cpu usage: %v", err)
+			return fmt.Errorf("cannot profile cpu usage: %w", err)
 		}
 
 		defer pprof.StopCPUProfile()
@@ -89,7 +90,7 @@ func Profile(fn func() error) (err error) {
 		}
 
 		if err := writeProfileToFile(fname, name); err != nil {
-			return fmt.Errorf("cannot write %s profile: %v", name, err)
+			return fmt.Errorf("cannot write %s profile: %w", name, err)
 		}
 	}
 
