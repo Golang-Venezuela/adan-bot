@@ -61,19 +61,20 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE: golang-venezuela/adan-bot
+      DOCKER_IMAGE: ghcr.io/euler-b/golang-venezuela/adan-bot
     steps:
       - name: Get source code
         uses: actions/checkout@v4
 
-      - name: Login to Github Container Registry ( A.K.A. ghcr.io )
+      - name: "Login into Github Container Registry (a.k.a. ghcr.io)"
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ SECRETS.GITHUB_TOKEN }}
-      - name: "Build and push Docker image to Github Container Registry('latest')"
+
+      - name: "Build and push Docker image to Github Container Registry ('latest')"
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          docker build --tag  ghcr.io/euler-b/$DOCKER_IMAGE:latest .
-          docker push ghcr.io/euler-b/$DOCKER_IMAGE:latest
+          docker build --tag $DOCKER_IMAGE:latest .
+          docker push $DOCKER_IMAGE:latest
