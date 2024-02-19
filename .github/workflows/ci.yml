@@ -71,7 +71,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CI_TOKEN_BOT}}
 
       - name: "Build and push Docker image to Github Container Registry ('latest')"
         if: ${{ github.ref == 'refs/heads/main' }}
