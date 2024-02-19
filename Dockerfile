@@ -7,7 +7,7 @@ LABEL maintainer="Eduardo Bravo <eduardojosebb.matescience@gmail.com>"
 RUN apk --no-cache add ca-certificates && update-ca-certificates
 WORKDIR /src
 COPY ./go.mod ./go.sum ./
-RUN go mod download
+RUN go mod download && go mod verify
 COPY ./ ./
 RUN CGO_ENABLED=0 GOFLAGS="-tags=timetzdata" \
   go build -ldflags="-s -w" -trimpath -o ./dist/ ./...
