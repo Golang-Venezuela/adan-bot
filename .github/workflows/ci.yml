@@ -73,8 +73,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Build and push Docker image to Github Container Registry ('latest')"
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          docker build . --tag $DOCKER_IMAGE_NAME:latest 
-          docker push $DOCKER_IMAGE_NAME:latest
+      - name: Text Print 
+              echo "TEST"
+              echo ${{ DOCKER_IMAGE_NAME  }}
+              echo ${{ uses }}
+              echo ${{ username }} 
+              
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: latest
+          labels: ${{ DOCKER_IMAGE_NAME }}
