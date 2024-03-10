@@ -169,3 +169,12 @@ test-race:
 .PHONY: watch
 watch:
 	reflex -d "none" -r '\.go$$' -s -- $(MAKE) -s $(WATCH_TARGET)
+
+.PHONY: air-init
+air-init:
+	$(GOPATH)/bin/air init
+
+.PHONY: air
+air:
+	$(GOPATH)/bin/air
+
