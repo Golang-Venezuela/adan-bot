@@ -18,10 +18,12 @@ See [Build system](#build-system) for a reference of the build system.
 - [GolangCI Lint][] >= 1.54
 - [GNU Make][] >= 4.3 (build tool)
 - [reflex][] >= 0.3 (filesystem watching)
+- [air][] >= 1.49 (☁️ Live reload for Go apps)
 
 [GolangCI Lint]: https://github.com/golangci/golangci-lint/releases
 [GNU Make]: https://www.gnu.org/software/make/
 [reflex]: https://github.com/cespare/reflex
+[air]: https://github.com/cosmtrek/air/
 
 ## Guidelines
 
@@ -140,11 +142,21 @@ $ make docker
   `.env`)
 
 ### Hot reloading
+**1. air**
+   
+If this is the first time you run this command in the project, we proceed to do the following:
+```shell-session
+$ make air-init
+```
+Then:
+```shell-session
+$ make air
+```
 
+**2. watch**
 ```shell-session
 $ make watch
 ```
-
 **Variables:**
 
 - `WATCH_TARGET`: Re-run given target. (default: `run`)
