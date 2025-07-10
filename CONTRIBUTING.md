@@ -8,16 +8,15 @@ See [Build system](#build-system) for a reference of the build system.
 ## Requirements
 
 - [Git][]
-- [Go][] >= 1.21
+- [Go][] >= 1.24
 
 [Git]: https://git-scm.com/
 [Go]: https://golang.org/dl/
+- [GNU Make][] >= 4.3 (build tool)
 
 **Optional:**
 
 - [GolangCI Lint][] >= 1.54
-- [GNU Make][] >= 4.3 (build tool)
-- [reflex][] >= 0.3 (filesystem watching)
 - [air][] >= 1.49 (☁️ Live reload for Go apps)
 
 [GolangCI Lint]: https://github.com/golangci/golangci-lint/releases
@@ -111,12 +110,11 @@ It is also possible to prepare a development environment with all required
 tools using the `build-docker-dev` target.
 
 ```shell-session
-$ make build-docker-debug
+$ make build-docker-dev
 ```
 
 ```shell-session
-$ docker run --rm -it --network host -u $(id -u) --env-file .env \
-    -v .:/src go-ve/adan-bot:dev
+$ docker build -f dev.Dockerfile -t go-ve/adan-bot:dev .
 ```
 
 Sharing Go build and modules cache with the container is easy, just mount some
@@ -128,10 +126,10 @@ $ docker run --rm -it --network host -u $(id -u) --env-file .env \
     go-ve/adan-bot:dev
 ```
 
-This is equivalent to run the `docker` target.
+This is equivalent to run the `dev-env` target.
 
 ```shell-session
-$ make docker
+$ make dev-env
 ```
 
 **Variables:**
@@ -216,3 +214,5 @@ Static code analysis is also provided, the are 2 variations.
 $ make ca
 $ make ca-fast  # Perform simple code analysis, reducing resources usage
 ```
+
+> if you want more commands, you can run ` $ make help` to see the list of available targets.
