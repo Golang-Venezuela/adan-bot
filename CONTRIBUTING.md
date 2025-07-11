@@ -8,16 +8,14 @@ See [Build system](#build-system) for a reference of the build system.
 ## Requirements
 
 - [Git][]
-- [Go][] >= 1.21
+- [Go][] >= 1.24
 
 [Git]: https://git-scm.com/
 [Go]: https://golang.org/dl/
 
 **Optional:**
-
-- [GolangCI Lint][] >= 1.54
 - [GNU Make][] >= 4.3 (build tool)
-- [reflex][] >= 0.3 (filesystem watching)
+- [GolangCI Lint][] >= 1.54
 - [air][] >= 1.49 (☁️ Live reload for Go apps)
 
 [GolangCI Lint]: https://github.com/golangci/golangci-lint/releases
@@ -63,7 +61,7 @@ experience. Most of them may be typed directly in the terminal and only serve
 as example since the Go toolchain provides the majority of tools needed with
 a simple interface.
 
-See [Makefile](Makefile) for a complete list of build targets.
+For a complete list of build targets see [Makefile](Makefile) or run `make help`.
 
 **Usage:**
 
@@ -111,6 +109,10 @@ It is also possible to prepare a development environment with all required
 tools using the `build-docker-dev` target.
 
 ```shell-session
+$ make build-docker-dev
+```
+
+```shell-session
 $ make build-docker-debug
 ```
 
@@ -128,10 +130,10 @@ $ docker run --rm -it --network host -u $(id -u) --env-file .env \
     go-ve/adan-bot:dev
 ```
 
-This is equivalent to run the `docker` target.
+This is equivalent to run the `dev-env` target.
 
 ```shell-session
-$ make docker
+$ make dev-env
 ```
 
 **Variables:**

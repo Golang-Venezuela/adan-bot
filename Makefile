@@ -124,8 +124,11 @@ doc:
 	godoc -http ":$(GODOC_PORT)" -play
 	#GOPROXY=$(shell go env GOPROXY) pkgsite -http ":$(GODOC_PORT)" -cache -proxy
 
-.PHONY: docker
-docker:
+.PHONY: dev-env
+dev-env:
+	@if ! docker image inspect $(DOCKER_IMAGE):dev > /dev/null 2>&1; then \
+		$(MAKE) build-docker-dev; \
+	fi
 	docker run --rm -it --network host -u "$(UID)" --env-file "$(ENV_FILE)" \
 		-v "$$HOME/.cache:/.cache" -v "$$HOME/go/pkg:/go/pkg" -v .:/src \
 		$(DOCKER_IMAGE):dev
@@ -166,15 +169,38 @@ test-race:
 		$(profileFlags) \
 		"$(TARGET_PKG)"
 
-.PHONY: watch
-watch:
-	reflex -d "none" -r '\.go$$' -s -- $(MAKE) -s $(WATCH_TARGET)
-
-.PHONY: air-init
-air-init:
-	$(GOPATH)/bin/air init
 
 .PHONY: air
 air:
 	$(GOPATH)/bin/air
 
+.PHONY: help
+help:
+	@echo "  Available commands:"
+	@echo "  all                 \t- Build the project"
+	@echo "  build               \t- Build the project"
+	@echo "  build-docker        \t- Build Docker image"
+	@echo "  build-docker-debug  \t- Build Docker image for debugging"
+	@echo "  build-docker-dev    \t- Build Docker image for development"
+	@echo "  dev-environment     \t- Run development environment in Docker"
+	@echo "  format              \t- Format Go code"
+	@echo "  fuzz                \t- Run fuzz tests"
+	@echo "  lint                \t- Lint Go code"
+	@echo "  run                 \t- Run the application"
+	@echo "  run-race            \t- Run the application with race detector"
+	@echo "  test                \t- Run tests"
+	@echo "  test-race           \t- Run tests with race detector"
+	@echo "  air                 \t- Run Air for live reloading"
+	@echo "  coverage            \t- Generate code coverage report"
+	@echo "  coverage-check      \t- Check code coverage against baseline"
+	@echo "  coverage-web        \t- Show code coverage in web browser"
+	@echo "  clean               \t- Clean build artifacts"
+	@echo "  clean-dev           \t- Clean development artifacts"
+	@echo "  doc                 \t- Run Go documentation server"
+	@echo "  benchmark           \t- Run benchmarks"
+	@echo "  benchmark-check     \t- Check benchmark results"
+	@echo "  benchmark-web       \t- Show benchmark results in web browser"
+	@echo "  ca                  \t- Run code analysis"
+	@echo "  ca-fast             \t- Run code analysis with fast mode"
+	@echo "  ci                  \t- Run continuous integration checks"
+	@echo "  ci-race             \t- Run continuous integration checks with race detector"
