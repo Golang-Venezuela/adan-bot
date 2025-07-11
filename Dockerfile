@@ -1,6 +1,6 @@
 ARG GO_VERSION=1.24
 
-FROM golang:${GO_VERSION}-alpine3.24 AS builder
+FROM golang:${GO_VERSION}-alpine3.22 AS builder
 
 LABEL maintainer="Eduardo Bravo <eduardojosebb.matescience@gmail.com>"
 

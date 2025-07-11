@@ -12,10 +12,9 @@ See [Build system](#build-system) for a reference of the build system.
 
 [Git]: https://git-scm.com/
 [Go]: https://golang.org/dl/
-- [GNU Make][] >= 4.3 (build tool)
 
 **Optional:**
-
+- [GNU Make][] >= 4.3 (build tool)
 - [GolangCI Lint][] >= 1.54
 - [air][] >= 1.49 (☁️ Live reload for Go apps)
 
@@ -62,7 +61,7 @@ experience. Most of them may be typed directly in the terminal and only serve
 as example since the Go toolchain provides the majority of tools needed with
 a simple interface.
 
-See [Makefile](Makefile) for a complete list of build targets.
+For a complete list of build targets see [Makefile](Makefile) or run `make help`.
 
 **Usage:**
 
@@ -114,7 +113,12 @@ $ make build-docker-dev
 ```
 
 ```shell-session
-$ docker build -f dev.Dockerfile -t go-ve/adan-bot:dev .
+$ make build-docker-debug
+```
+
+```shell-session
+$ docker run --rm -it --network host -u $(id -u) --env-file .env \
+    -v .:/src go-ve/adan-bot:dev
 ```
 
 Sharing Go build and modules cache with the container is easy, just mount some
@@ -214,5 +218,3 @@ Static code analysis is also provided, the are 2 variations.
 $ make ca
 $ make ca-fast  # Perform simple code analysis, reducing resources usage
 ```
-
-> if you want more commands, you can run ` $ make help` to see the list of available targets.

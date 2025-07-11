@@ -8,7 +8,7 @@ goFiles := $(shell find . -iname "*.go" -type f | grep -v "/_" | grep -v "^\./ve
 goFilesSrc := $(shell $(GO) list -f '{{ range .GoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}' ./...)
 goFilesTest := $(shell $(GO) list -f "{{ range .TestGoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}{{ range .XTestGoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}" ./...)
 
-.PHONY: all 
+.PHONY: all
 all: build
 
 .PHONY: build
@@ -169,9 +169,6 @@ test-race:
 		$(profileFlags) \
 		"$(TARGET_PKG)"
 
-.PHONY: air-init
-air-init:
-	$(GOPATH)/bin/air init
 
 .PHONY: air
 air:
@@ -193,7 +190,6 @@ help:
 	@echo "  run-race            \t- Run the application with race detector"
 	@echo "  test                \t- Run tests"
 	@echo "  test-race           \t- Run tests with race detector"
-	@echo "  air-init            \t- Initialize Air configuration"
 	@echo "  air                 \t- Run Air for live reloading"
 	@echo "  coverage            \t- Generate code coverage report"
 	@echo "  coverage-check      \t- Check code coverage against baseline"
