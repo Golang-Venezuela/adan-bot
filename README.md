@@ -1,20 +1,15 @@
 <div align="center">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="doc/Adan-bot.png" height="240">
-  <img src="doc/Adan-bot.png" height="240">
-</picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="doc/Adan-bot.png" height="240">
+    <img src="doc/Adan-bot.png" height="240">
+  </picture>
+</div>
 
-<br/>
+<div align="center">
 
-<p>
-<a href="https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=bug+P%3F&projects=&template=bug-report.md&title=">
-  Report Bug
-</a>
-·
-<a href="https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=&projects=&template=feature-request.md&title=">
-  Request Feature
-</a>
-</p>
+[Report Bug]("https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=bug+P%3F&projects=&template=bug-report.md&title=") | [Request Feature](https://github.com/Golang-Venezuela/adan-bot/issues/new?assignees=&labels=&projects=&template=feature-request.md&title=)
+
+</div>
 
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
@@ -45,27 +40,27 @@
 
 Adan-Bot is the first bot in the community (hence its name) that will evolve, gradually acquiring numerous implicit features, making it increasingly better.
 
-## Installation 
+## Installation
 
 ### From source
 
 Use the Go toolchain to fetch the module.
 
-```shell-session
-$ go install github.com/Golang-Venezuela/adan-bot/cmd/adan-bot
+```shell
+go install github.com/Golang-Venezuela/adan-bot/cmd/adan-bot
 ```
 
 > [!IMPORTANT]
 > You need to add Go installed binaries directory to your `PATH`.
 
-```shell-session
-$ export PATH="$(go env "GOPATH")/bin:$PATH"
+```shell
+export PATH="$(go env "GOPATH")/bin:$PATH"
 ```
 
-## How to run 
+## How to run
 
-```shell-session
-$ TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
+```shell
+TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 ```
 
 ## Features
@@ -76,13 +71,13 @@ $ TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 - [ ] Captcha for new users. (ref. join captcha bot)
 - [ ] Create databases (Validate SurrealDB) with the members of the Group
 - [ ] Notification to the group when a PR is created
-- [ ] Notification of new deploy 
+- [ ] Notification of new deploy
 - [ ] Remove and ban users
 
-## CI/CD 
+## CI/CD
 
-- [x] Add Contributing sections 
-- [x] Automatic CHANGELOG 
+- [x] Add Contributing sections
+- [x] Automatic CHANGELOG
 - [x] Add Linter pipeline
 - [ ] Test with coverage (50%)
 

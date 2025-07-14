@@ -7,21 +7,15 @@ See [Build system](#build-system) for a reference of the build system.
 
 ## Requirements
 
-- [Git][]
-- [Go][] >= 1.24
+- [Git](https://git-scm.com/)
+- [Go](https://golang.org/dl/) >= 1.24
 
-[Git]: https://git-scm.com/
-[Go]: https://golang.org/dl/
+### Optional
 
-**Optional:**
-- [GNU Make][] >= 4.3 (build tool)
-- [GolangCI Lint][] >= 1.54
-- [air][] >= 1.49 (☁️ Live reload for Go apps)
-
-[GolangCI Lint]: https://github.com/golangci/golangci-lint/releases
-[GNU Make]: https://www.gnu.org/software/make/
-[reflex]: https://github.com/cespare/reflex
-[air]: https://github.com/cosmtrek/air/
+- [GNU Make](https://www.gnu.org/software/make/) >= 4.3 (build tool)
+- [GolangCI Lint](https://github.com/golangci/golangci-lint/releases) >= 1.54
+- [air](https://github.com/cosmtrek/air/) >= 1.49 (☁️ Live reload for Go apps)
+- [reflex](https://github.com/cespare/reflex)
 
 ## Guidelines
 
@@ -65,14 +59,14 @@ For a complete list of build targets see [Makefile](Makefile) or run `make help`
 
 **Usage:**
 
-```shell-session
-$ make [VARIABLE=VALUE...] [TARGET...]
+```shell
+make [VARIABLE=VALUE...] [TARGET...]
 ```
 
 ### Building
 
-```shell-session
-$ make build
+```shell
+make build
 ```
 
 **Variables:**
@@ -83,12 +77,12 @@ $ make build
 
 A docker image is also provided.
 
-```shell-session
-$ make build-docker
+```shell
+make build-docker
 ```
 
-```shell-session
-$ docker run --rm -it go-ve/adan-bot
+```shell
+docker run --rm -it go-ve/adan-bot
 ```
 
 The resulting image uses `scratch` as base image, considerably reducing the
@@ -96,44 +90,44 @@ image size and improving security by reducing the attack surface, but there are
 some cases where having a shell and common commands helps during debugging
 process. For this cases, you may use the `build-docker-debug` target.
 
-```shell-session
-$ make build-docker-debug
+```shell
+make build-docker-debug
 ```
 
-```shell-session
-$ docker run --rm -it go-ve/adan-bot:debug
-$ docker run --rm -it go-ve/adan-bot:debug sh  # Launch a shell session.
+```shell
+docker run --rm -it go-ve/adan-bot:debug
+docker run --rm -it go-ve/adan-bot:debug sh  # Launch a shell session.
 ```
 
 It is also possible to prepare a development environment with all required
 tools using the `build-docker-dev` target.
 
-```shell-session
-$ make build-docker-dev
+```shell
+make build-docker-dev
 ```
 
-```shell-session
-$ make build-docker-debug
+```shell
+make build-docker-debug
 ```
 
-```shell-session
-$ docker run --rm -it --network host -u $(id -u) --env-file .env \
+```shell
+docker run --rm -it --network host -u $(id -u) --env-file .env \
     -v .:/src go-ve/adan-bot:dev
 ```
 
 Sharing Go build and modules cache with the container is easy, just mount some
 extra volumes.
 
-```shell-session
-$ docker run --rm -it --network host -u $(id -u) --env-file .env \
+```shell
+docker run --rm -it --network host -u $(id -u) --env-file .env \
     -v "$HOME/.cache:/.cache" -v "$HOME/go/pkg:/go/pkg" -v .:/src \
     go-ve/adan-bot:dev
 ```
 
 This is equivalent to run the `dev-env` target.
 
-```shell-session
-$ make dev-env
+```shell
+make dev-env
 ```
 
 **Variables:**
@@ -144,50 +138,56 @@ $ make dev-env
   `.env`)
 
 ### Hot reloading
-**1. air**
-   
+
+#### air
+
 If this is the first time you run this command in the project, we proceed to do the following:
-```shell-session
-$ make air-init
-```
-Then:
-```shell-session
-$ make air
+
+```shell
+make air-init
 ```
 
-**2. watch**
-```shell-session
-$ make watch
+Then:
+
+```shell
+make air
 ```
-**Variables:**
+
+#### watch
+
+```shell
+make watch
+```
+
+#### Variables
 
 - `WATCH_TARGET`: Re-run given target. (default: `run`)
 
 ### Testing
 
-```shell-session
-$ make test
-$ make test-race  # Enable the race condition detector during tests.
+```shell
+make test
+make test-race  # Enable the race condition detector during tests.
 ```
 
 For generating coverage statistics you may use the `coverage` or `coverage-web`
 targets, they will generate text and HTML outputs respectively.
 
-```shell-session
-$ make coverage
-$ make coverage-web
+```shell
+make coverage
+make coverage-web
 ```
 
 Fuzz testing is also supported.
 
-```shell-session
-$ make fuzz
+```shell
+make fuzz
 ```
 
 As well as benchmarks.
 
-```shell-session
-$ make benchmark
+```shell
+make benchmark
 ```
 
 **Variables:**
@@ -202,19 +202,19 @@ $ make benchmark
 
 ### QA
 
-```shell-session
-$ make lint
+```shell
+make lint
 ```
 
 It is possible to format Go files directly with the `format` target.
 
-```shell-session
-$ make format
+```shell
+make format
 ```
 
 Static code analysis is also provided, the are 2 variations.
 
-```shell-session
-$ make ca
-$ make ca-fast  # Perform simple code analysis, reducing resources usage
+```shell
+make ca
+make ca-fast  # Perform simple code analysis, reducing resources usage
 ```
