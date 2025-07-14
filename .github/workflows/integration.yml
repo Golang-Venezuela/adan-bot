@@ -22,7 +22,7 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.2.1
-          args: --config golangci.yml --timeout=5m ./...
+          args: --config .golangci.yml --timeout=5m ./...
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
