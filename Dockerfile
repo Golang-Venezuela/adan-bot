@@ -12,7 +12,7 @@ COPY ./ ./
 RUN CGO_ENABLED=0 GOFLAGS="-tags=timetzdata" \
   go build -ldflags="-s -w" -trimpath -o ./dist/ ./...
 
-FROM alpine:3.22 as debug
+FROM alpine:3.22 AS debug
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /src/dist/adan-bot /bin/adan-bot
 USER 1000
