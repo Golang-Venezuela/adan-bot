@@ -1,4 +1,7 @@
-package main
+// Package profiling offers native runtime instrumentation utilities.
+// It vastly simplifies the integration of CPU profiling and execution tracing structurally 
+// by intercepting predefined environment flags seamlessly.
+package profiling
 
 import (
 	"errors"
@@ -11,6 +14,10 @@ import (
 	"strings"
 )
 
+// Profile acts as a foundational middleware or wrapper designated for the main entry point of the application.
+// It actively evaluates discrete environment variables (e.g., TRACE=1, PROFILE_CPU=1) and structurally 
+// generates tracing execution files and pprof profile artifacts suited for deep performance analysis.
+//
 //nolint:cyclop,gocognit,nestif
 func Profile(fn func() error) (err error) {
 	if os.Getenv("TRACE") == "1" {
@@ -97,6 +104,10 @@ func Profile(fn func() error) (err error) {
 	return nil
 }
 
+// writeProfile resolves a pprof entity by its corresponding name and securely writes its 
+// serialized contents inherently to the provided io.Writer parameter.
+// When dealing with memory-based profiles ("allocs" or "heap"), it forces an instantaneous 
+// Garbage Collection cycle to proactively assure output accuracy.
 func writeProfile(w io.Writer, name string) error {
 	prof := pprof.Lookup(name)
 	if prof == nil {
@@ -114,6 +125,8 @@ func writeProfile(w io.Writer, name string) error {
 	return nil
 }
 
+// writeProfileToFile physically coordinates the creation of a system file on disk 
+// and subsequently delegating the raw telemetry parsing and payload writing logic downward to writeProfile.
 func writeProfileToFile(fname, name string) error {
 	f, err := os.Create(fname)
 	if err != nil {

@@ -6,10 +6,10 @@ RUN apk add --no-cache ca-certificates gcc git make musl-dev
 
 WORKDIR /src
 
-RUN go install github.com/go-delve/delve/cmd/dlv@v1.21.1 && \
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2 && \
-    go install golang.org/x/perf/cmd/benchstat@master && \
-    go install golang.org/x/tools/cmd/godoc@master && \
+RUN go install github.com/go-delve/delve/cmd/dlv@latest && \
+    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && \
+    go install golang.org/x/perf/cmd/benchstat@latest && \
+    go install golang.org/x/tools/cmd/godoc@latest && \
     go install github.com/air-verse/air@latest && \
     go clean -cache -modcache
 

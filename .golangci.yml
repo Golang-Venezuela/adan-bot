@@ -14,7 +14,6 @@ linters:
     - misspell
     - nestif
     - nlreturn
-    - noinlineerr
     - nonamedreturns
     - revive
     - unused

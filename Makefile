@@ -6,6 +6,7 @@ help: ## Display this help message, listing all available targets and their desc
 
 ## Project Metadata & Defaults
 GO ?= go
+GOPATH ?= $(shell $(GO) env GOPATH)
 module := $(shell $(GO) list -m)
 PROJECT ?= $(notdir $(module))
 DOCKER_IMAGE ?= go-ve/adan-bot
