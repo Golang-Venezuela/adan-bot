@@ -63,6 +63,20 @@ export PATH="$(go env "GOPATH")/bin:$PATH"
 TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 ```
 
+### Using Containers (Docker or Podman)
+
+The project includes a `Makefile` that automatically detects if you have `podman` or `docker` installed.
+
+To build the image:
+```shell
+make build-docker
+```
+
+To run a development environment with live reloading (using `air`):
+```shell
+make dev-env
+```
+
 ## Features
 
 - [x] Hola Mundo.
@@ -86,6 +100,7 @@ TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 - [![Go][Go]][Go-url]
 - [![telegram-api][telegram-api]][telegram-api-url]
 - [![Docker][Docker-shield]][Docker-url]
+- [![Podman][Podman-shield]][Podman-url]
 
 [Go]: https://img.shields.io/badge/Go-3498DB?style=flat&logo=Go&logoColor=white
 [Go-url]: https://go.dev/
@@ -94,6 +109,8 @@ TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 [codeQL-shield]: https://github.com/ossf/scorecard/workflows/CodeQL/badge.svg?branch=main
 [Docker-shield]: https://img.shields.io/badge/docker-003f8c?style=flat&logo=docker&logoColor=white
 [Docker-url]: https://www.docker.com/
+[Podman-shield]: https://img.shields.io/badge/podman-892ca0?style=flat&logo=podman&logoColor=white
+[Podman-url]: https://podman.io/
 
 ## Contributing
 

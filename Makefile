@@ -14,6 +14,9 @@ UID ?= $(shell id -u)
 GODOC_PORT ?= 6060
 ENV_FILE ?= .env
 
+# Container engine detection
+CONTAINER_ENGINE ?= $(shell command -v podman 2> /dev/null || command -v docker 2> /dev/null || echo docker)
+
 CPUPROFILE ?= cpu.prof
 MEMPROFILE ?= mem.prof
 WATCH_TARGET ?= run
@@ -48,25 +51,25 @@ run-race: ## Run the application with race detector
 air: ## Run Air for live reloading
 	$(GOPATH)/bin/air
 
-##@ Docker
+##@ Container Support (Docker/Podman)
 .PHONY: build-docker build-docker-debug build-docker-dev dev-env
 
 .PHONY: build-docker
-build-docker: ## Build Docker image
-	docker build -t $(DOCKER_IMAGE) .
+build-docker: ## Build container image
+	$(CONTAINER_ENGINE) build -t $(DOCKER_IMAGE) .
 
-build-docker-debug: ## Build Docker image for debugging
-	docker build --target debug -t $(DOCKER_IMAGE):debug .
+build-docker-debug: ## Build container image for debugging
+	$(CONTAINER_ENGINE) build --target debug -t $(DOCKER_IMAGE):debug .
 
-build-docker-dev: ## Build Docker image for development
-	docker build -f dev.Dockerfile -t $(DOCKER_IMAGE):dev .
+build-docker-dev: ## Build container image for development
+	$(CONTAINER_ENGINE) build -f dev.Dockerfile -t $(DOCKER_IMAGE):dev .
 
-dev-env: ## Run development environment in Docker
-	@if ! docker image inspect $(DOCKER_IMAGE):dev > /dev/null 2>&1; then \
+dev-env: ## Run development environment in container
+	@if ! $(CONTAINER_ENGINE) image inspect $(DOCKER_IMAGE):dev > /dev/null 2>&1; then \
 		$(MAKE) build-docker-dev; \
 	fi
-	docker run --rm -it --network host -u "$(UID)" --env-file "$(ENV_FILE)" \
-		-v "$$HOME/.cache:/.cache" -v "$$HOME/go/pkg:/go/pkg" -v .:/src \
+	$(CONTAINER_ENGINE) run --rm -it --network host -u "$(UID)" --env-file "$(ENV_FILE)" \
+		-v "$$HOME/.cache:/.cache:Z" -v "$$HOME/go/pkg:/go/pkg:Z" -v .:/src:Z \
 		$(DOCKER_IMAGE):dev
 
 ##@ Testing
