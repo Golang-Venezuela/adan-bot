@@ -4,13 +4,18 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log/slog"
 	"os"
+	"runtime"
 	"strings"
 	"time"
 
+	"github.com/Golang-Venezuela/adan-bot/internal/adapters/delivery/telegram"
+	"github.com/Golang-Venezuela/adan-bot/internal/adapters/repository"
+	"github.com/Golang-Venezuela/adan-bot/internal/core/services"
 	"github.com/Golang-Venezuela/adan-bot/internal/infra/config"
 	"github.com/Golang-Venezuela/adan-bot/internal/infra/logger"
 	"github.com/Golang-Venezuela/adan-bot/internal/infra/profiling"
@@ -18,8 +23,10 @@ import (
 	tele "gopkg.in/telebot.v4"
 )
 
-// Predefined errors used within the bot initialization.
 var (
+	// startTime is used to calculate the bot's uptime.
+	startTime = time.Now()
+
 	// ErrMissingToken is returned when the TELEGRAM_API_TOKEN environment variable is absent or empty.
 	ErrMissingToken = errors.New("missing Telegram API token")
 )
@@ -57,6 +64,11 @@ func Main() error {
 
 	slog.Info("Authorized", slog.String("account", logger.Obfuscate(bot.Me.Username)))
 
+	// Initialize Moderation dependencies
+	modRepo := repository.NewMemoryModerationRepo()
+	modSvc := services.NewModerationService(modRepo)
+	telegram.RegisterModerationHandlers(bot, modSvc)
+
 	// Inject a global middleware to intercept and log incoming messages for tracing and observability.
 	bot.Use(func(next tele.HandlerFunc) tele.HandlerFunc {
 		return func(c tele.Context) error {
@@ -71,25 +83,56 @@ func Main() error {
 		}
 	})
 
-	// Setup basic handlers for standard bot commands (e.g., /help, /hola, /status).
-	bot.Handle("/help", func(c tele.Context) error {
-		slog.Info("Executing /help command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
-		return c.Send("/hola and /status.")
+	// Setup basic handlers for standard bot commands (e.g., /ayuda, /hola, /estatus).
+	bot.Handle("/ayuda", func(c tele.Context) error {
+		slog.Info("Executing /ayuda command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
+
+		menu := &tele.ReplyMarkup{ResizeKeyboard: true}
+		btnHola := menu.Text("Bienvenida")
+		btnStatus := menu.Text("Estatus")
+
+		menu.Reply(
+			menu.Row(btnHola, btnStatus),
+		)
+
+		return c.Send("¡Hola! Soy Adan Bot. Selecciona una opción del menú de abajo:", menu)
 	})
 
-	bot.Handle("/hola", func(c tele.Context) error {
+	bot.Handle("Bienvenida", func(c tele.Context) error {
 		slog.Info("Executing /hola command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
-		msg := "Hola mi nombre es Adan el Bot 🤖 de la comunidad de Golang"
-		msg += " Venezuela. Y como la cancion: <<naci en esta ribera del "
-		msg += "arauca vibrador, soy hermano de la espuma de las garzas de "
-		msg += "las rosas y del sol.>> "
-		return c.Send(msg)
+		
+		displayName := c.Sender().FirstName
+		if displayName == "" {
+			displayName = c.Sender().Username
+			if displayName != "" {
+				displayName = "@" + displayName
+			}
+		}
+
+		// send sticker with welcome greeting
+		sticker := &tele.Sticker{File: tele.FromURL("https://raw.githubusercontent.com/TelegramBots/book/master/src/docs/sticker-fred.webp")}
+		_ = c.Send(sticker)
+
+		ctx := context.Background()
+		msg := modSvc.GetWelcomeMessage(ctx, displayName)
+		return c.Send(msg, tele.ModeHTML)
 	})
 
-	bot.Handle("/status", func(c tele.Context) error {
-		slog.Info("Executing /status command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
-		//nolint:misspell
-		return c.Send("De momento todo esta bien")
+	bot.Handle("Estatus", func(c tele.Context) error {
+		slog.Info("Executing /estatus command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
+		
+		var m runtime.MemStats
+		runtime.ReadMemStats(&m)
+		uptime := time.Since(startTime).Round(time.Second)
+		goroutines := runtime.NumGoroutine()
+		memUsedMB := m.Alloc / 1024 / 1024
+
+		msg := fmt.Sprintf("✅ <b>Servicio Online</b>\n\n"+
+			"⏱ <b>Uptime:</b> %s\n"+
+			"🧵 <b>Goroutines:</b> %d\n"+
+			"💾 <b>Memoria:</b> %d MB", uptime, goroutines, memUsedMB)
+
+		return c.Send(msg, tele.ModeHTML)
 	})
 
 	// Fallback handler for any text payload that resembles an unsupported command.

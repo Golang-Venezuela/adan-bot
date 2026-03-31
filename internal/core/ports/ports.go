@@ -4,6 +4,8 @@ package ports
 
 import (
 	"context"
+	"time"
+
 	"github.com/Golang-Venezuela/adan-bot/internal/core/domain"
 )
 
@@ -21,4 +23,22 @@ type BotService interface {
 	HandleStartHelp(ctx context.Context) string
 	HandleHola(ctx context.Context, userID int64, username, firstName, lastName string) (string, error)
 	HandleStatus(ctx context.Context) string
+}
+
+// ModerationRepository handles persistence of moderation records.
+type ModerationRepository interface {
+	SaveWarning(ctx context.Context, warning domain.Warning) error
+	GetWarningsCount(ctx context.Context, chatID, userID int64) (int, error)
+	ResetWarnings(ctx context.Context, chatID, userID int64) error
+	SetRoMode(ctx context.Context, chatID int64, enabled bool) error
+	GetRoMode(ctx context.Context, chatID int64) (bool, error)
+}
+
+// ModerationService defines the core business operations for moderation features.
+type ModerationService interface {
+	GetWelcomeMessage(ctx context.Context, username string) string
+	CheckAntiSpam(ctx context.Context, chatID, userID int64, message string, memberSince time.Time) (bool, error)
+	IssueWarning(ctx context.Context, chatID, userID, adminID int64, reason string) (int, error)
+	ToggleRoMode(ctx context.Context, chatID, adminID int64, enabled bool) error
+	IsRoModeActive(ctx context.Context, chatID int64) bool
 }
