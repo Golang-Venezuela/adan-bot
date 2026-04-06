@@ -65,17 +65,41 @@ TELEGRAM_APITOKEN="YOUR_BOT_TOKEN" adan-bot
 
 ### Using Containers (Docker or Podman)
 
-The project includes a `Makefile` that automatically detects if you have `podman` or `docker` installed.
+The project includes a `Makefile` that automatically detects if you have `podman` or `docker` installed. If you have both, Podman takes precedence.
+You can also explicitly specify the engine by appending `docker` or `podman` after your target.
 
-To build the image:
+To build the image (with auto-detection):
 ```shell
 make build-docker
+```
+Or specifying the engine:
+```shell
+make build-docker docker
 ```
 
 To run a development environment with live reloading (using `air`):
 ```shell
-make dev-env
+make dev-env podman
 ```
+
+> [!TIP]
+> Build-time options such as the CPU limit are read from your `.env` file automatically — no extra flags needed. See [Environment configuration](#environment-configuration) below.
+
+## Environment configuration
+
+Copy `env.example` to `.env` and fill in the values:
+
+```shell
+cp env.example .env
+```
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `TELEGRAM_API_TOKEN` | ✅ | — | Bot token obtained from [@BotFather](https://t.me/botfather) |
+| `BUILD_CPU_LIMIT` | ❌ | `2` | Max CPUs the container engine may use **while building** an image. Accepts decimals (`1.5`). Set to `0` to remove the limit. |
+
+> [!NOTE]
+> The `.env` file is listed in `.gitignore` and will never be committed. `env.example` is the safe, version-controlled template.
 
 ## Features
 

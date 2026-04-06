@@ -14,12 +14,38 @@ UID ?= $(shell id -u)
 GODOC_PORT ?= 6060
 ENV_FILE ?= .env
 
+# Load variables from ENV_FILE when it exists (e.g. BUILD_CPU_LIMIT).
+# The leading '-' silences the error if the file is absent.
+-include $(ENV_FILE)
+export
+
 # Container engine detection
-CONTAINER_ENGINE ?= $(shell command -v podman 2> /dev/null || command -v docker 2> /dev/null || echo docker)
+SUPPORTED_ENGINES := docker podman
+engine_arg := $(filter $(SUPPORTED_ENGINES),$(MAKECMDGOALS))
+ifneq ($(engine_arg),)
+  CONTAINER_ENGINE = $(word 1,$(engine_arg))
+  $(eval $(engine_arg):;@:)
+else
+  CONTAINER_ENGINE ?= $(shell command -v podman 2> /dev/null || command -v docker 2> /dev/null || echo docker)
+endif
 
 CPUPROFILE ?= cpu.prof
 MEMPROFILE ?= mem.prof
 WATCH_TARGET ?= run
+BUILD_CPU_LIMIT ?= 2
+
+# CPU limits and Users are handled differently in Podman and Docker
+ifeq ($(findstring podman,$(CONTAINER_ENGINE)),podman)
+    # Rootless Podman often lacks cgroup delegation for cpuset/cpu quotas.
+    # We omit the limit by default to avoid crun/cgroupv2 errors.
+    CPU_LIMIT_ARGS ?=
+    # Podman requires --userns=keep-id to map current user nicely without file permission issues
+    USER_ARGS ?= --userns=keep-id -e HOME=/
+else
+    CPU_LIMIT_ARGS ?= --cpus $(BUILD_CPU_LIMIT)
+    # Docker uses the simple uid flag
+    USER_ARGS ?= -u "$(UID)" -e HOME=/
+endif
 
 ## File Lists
 goFiles := $(shell find . -iname "*.go" -type f | grep -v "/_" | grep -v "^\./vendor")
@@ -56,19 +82,19 @@ air: ## Run Air for live reloading
 
 .PHONY: build-docker
 build-docker: ## Build container image
-	$(CONTAINER_ENGINE) build -t $(DOCKER_IMAGE) .
+	$(CONTAINER_ENGINE) build $(CPU_LIMIT_ARGS) -t $(DOCKER_IMAGE) .
 
 build-docker-debug: ## Build container image for debugging
-	$(CONTAINER_ENGINE) build --target debug -t $(DOCKER_IMAGE):debug .
+	$(CONTAINER_ENGINE) build $(CPU_LIMIT_ARGS) --target debug -t $(DOCKER_IMAGE):debug .
 
 build-docker-dev: ## Build container image for development
-	$(CONTAINER_ENGINE) build -f dev.Dockerfile -t $(DOCKER_IMAGE):dev .
+	$(CONTAINER_ENGINE) build $(CPU_LIMIT_ARGS) -f dev.Dockerfile -t $(DOCKER_IMAGE):dev .
 
 dev-env: ## Run development environment in container
 	@if ! $(CONTAINER_ENGINE) image inspect $(DOCKER_IMAGE):dev > /dev/null 2>&1; then \
 		$(MAKE) build-docker-dev; \
 	fi
-	$(CONTAINER_ENGINE) run --rm -it --network host -u "$(UID)" --env-file "$(ENV_FILE)" \
+	$(CONTAINER_ENGINE) run --rm -it --network host $(USER_ARGS) --env-file "$(ENV_FILE)" \
 		-v "$$HOME/.cache:/.cache:Z" -v "$$HOME/go/pkg:/go/pkg:Z" -v .:/src:Z \
 		$(DOCKER_IMAGE):dev
 
