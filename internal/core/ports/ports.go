@@ -10,7 +10,7 @@ import (
 )
 
 // UserRepository defines the persistence contract for user data.
-// It allows the business logic to securely save and retrieve user records 
+// It allows the business logic to securely save and retrieve user records
 // without being coupled to a specific underlying database technology.
 type UserRepository interface {
 	SaveUser(ctx context.Context, user domain.User) error

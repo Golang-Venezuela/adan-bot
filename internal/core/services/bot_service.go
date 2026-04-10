@@ -1,5 +1,5 @@
 // Package services implements the core business logic and primary use cases of the application.
-// It acts as the orchestrator bridging external delivery mechanisms (such as the Telegram API router) 
+// It acts as the orchestrator bridging external delivery mechanisms (such as the Telegram API router)
 // and outward persistence ports (like the SQLite database).
 package services
 

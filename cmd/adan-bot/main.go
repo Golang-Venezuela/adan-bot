@@ -100,7 +100,7 @@ func Main() error {
 
 	bot.Handle("Bienvenida", func(c tele.Context) error {
 		slog.Info("Executing /hola command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
-		
+
 		displayName := c.Sender().FirstName
 		if displayName == "" {
 			displayName = c.Sender().Username
@@ -120,7 +120,7 @@ func Main() error {
 
 	bot.Handle("Estatus", func(c tele.Context) error {
 		slog.Info("Executing /estatus command", slog.String("user_id", logger.ObfuscateID(c.Sender().ID)))
-		
+
 		var m runtime.MemStats
 		runtime.ReadMemStats(&m)
 		uptime := time.Since(startTime).Round(time.Second)

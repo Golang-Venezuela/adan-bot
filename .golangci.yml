@@ -19,6 +19,23 @@ linters:
     - unused
     - varnamelen
     - wsl
+    - exhaustruct
+    - gochecknoglobals
+    - godot
+    - intrange
+    - ireturn
+    - mnd
+    - nilnil
+    - paralleltest
+    - perfsprint
+    - testpackage
+    - unparam
+    - usetesting
+    - wrapcheck
+    - godoclint
+    - modernize
+    - noinlineerr
+    - wsl_v5
   settings:
     revive:
       enable-all-rules: true

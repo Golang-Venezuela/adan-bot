@@ -101,7 +101,7 @@ func TestMemoryModerationRepo_RoMode(t *testing.T) {
 	}
 }
 
-// TestMemoryModerationRepo_Concurrency stresses the repository with multiple 
+// TestMemoryModerationRepo_Concurrency stresses the repository with multiple
 // simultaneous reads and writes to verify thread safety and race-free operation.
 func TestMemoryModerationRepo_Concurrency(t *testing.T) {
 	repo := NewMemoryModerationRepo()
@@ -143,4 +143,3 @@ func TestMemoryModerationRepo_Concurrency(t *testing.T) {
 		t.Errorf("expected %d warnings, got %d", iterations, count)
 	}
 }
-

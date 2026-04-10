@@ -49,7 +49,7 @@ func init() {
 
 	// Configure the Telegram bot settings for a serverless execution environment.
 	pref := tele.Settings{
-		Token:       apiToken,
+		Token: apiToken,
 		// Synchronous must be true because serverless functions freeze their execution context
 		// immediately after the handler returns, potentially killing background goroutines abruptly.
 		Synchronous: true,

@@ -10,7 +10,7 @@ import (
 	"github.com/Golang-Venezuela/adan-bot/internal/adapters/repository"
 )
 
-// TestModerationService_GetWelcomeMessage verifies that the welcome message 
+// TestModerationService_GetWelcomeMessage verifies that the welcome message
 // generated for new users contains their first name and community branding.
 func TestModerationService_GetWelcomeMessage(t *testing.T) {
 	repo := repository.NewMemoryModerationRepo()
@@ -26,8 +26,8 @@ func TestModerationService_GetWelcomeMessage(t *testing.T) {
 	}
 }
 
-// TestModerationService_CheckAntiSpam runs a suite of table-driven tests to verify 
-// that links are correctly identified and blocked for new members while allowed 
+// TestModerationService_CheckAntiSpam runs a suite of table-driven tests to verify
+// that links are correctly identified and blocked for new members while allowed
 // for established community members.
 func TestModerationService_CheckAntiSpam(t *testing.T) {
 	repo := repository.NewMemoryModerationRepo()
@@ -128,7 +128,7 @@ func TestModerationService_IssueWarning_Lifecycle(t *testing.T) {
 	}
 }
 
-// TestModerationService_RoMode verifies that the service correctly interacts with 
+// TestModerationService_RoMode verifies that the service correctly interacts with
 // the persistence layer to manage and check the Read-Only mode status.
 func TestModerationService_RoMode(t *testing.T) {
 	repo := repository.NewMemoryModerationRepo()
@@ -154,4 +154,3 @@ func TestModerationService_RoMode(t *testing.T) {
 		t.Error("expected RoMode to be inactive")
 	}
 }
-

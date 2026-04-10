@@ -23,7 +23,7 @@ func RegisterModerationHandlers(bot *tele.Bot, svc ports.ModerationService) {
 		if c.Chat() == nil || c.Sender() == nil {
 			return nil
 		}
-		
+
 		displayName := c.Sender().FirstName
 		if displayName == "" {
 			displayName = c.Sender().Username
@@ -43,7 +43,7 @@ func RegisterModerationHandlers(bot *tele.Bot, svc ports.ModerationService) {
 	})
 
 	// 2. Moderation Command: /warn
-	// Issues a warning to a user by replying to their message. 
+	// Issues a warning to a user by replying to their message.
 	// At 3 cumulative warnings, the user is automatically banned (kicked) from the chat.
 	bot.Handle("/warn", func(c tele.Context) error {
 		ctx := context.Background()
@@ -59,7 +59,7 @@ func RegisterModerationHandlers(bot *tele.Bot, svc ports.ModerationService) {
 		targetUserID := c.Message().ReplyTo.Sender.ID
 		adminID := c.Sender().ID
 		chatID := c.Chat().ID
-		
+
 		// Parse the reason from the command arguments.
 		reason := strings.TrimSpace(strings.TrimPrefix(c.Text(), "/warn"))
 		if reason == "" {
@@ -146,11 +146,12 @@ func RegisterModerationHandlers(bot *tele.Bot, svc ports.ModerationService) {
 			}
 
 			// Anti-Spam Enforcement: Block links from recent members (e.g., joined < 24h ago).
-			member, err := bot.ChatMemberOf(c.Chat(), c.Sender())
+			// Note: Retrieve member join date when supported:
+			// member, err := bot.ChatMemberOf(c.Chat(), c.Sender())
+			// if err == nil && member != nil {
+			// 	// Note: Precise join time might vary based on chat member scope.
+			// }
 			var joinDate time.Time
-			if err == nil && member != nil {
-				// Note: Precise join time might vary based on chat member scope.
-			}
 
 			isSpam, _ := svc.CheckAntiSpam(ctx, c.Chat().ID, c.Sender().ID, c.Text(), joinDate)
 			if isSpam {

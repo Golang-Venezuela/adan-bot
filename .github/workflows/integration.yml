@@ -13,22 +13,22 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
-          go-version: 1.22
+          go-version: 1.26.1
 
       - name: golangci-lint run
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: v1.57.2
+          version: v2.11.4
           args: --timeout=5m ./...
 
       - name: Upload linter reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linter-reports-${{ github.run_number }}
           path: reports/
@@ -39,12 +39,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go_version: [1.22]
+        go_version: [1.26.1]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go_version }}
 
@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload test reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-reports-${{ github.run_number }}
           path: reports/
@@ -77,12 +77,12 @@ jobs:
     needs: [lint, test]
     strategy:
       matrix:
-        go_version: [1.22]
+        go_version: [1.26.1]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go_version }}
 
@@ -98,7 +98,7 @@ jobs:
     env:
       DOCKER_IMAGE_NAME: ghcr.io/golang-venezuela/adan-bot
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Log in to ghcr.io
         uses: docker/login-action@v3

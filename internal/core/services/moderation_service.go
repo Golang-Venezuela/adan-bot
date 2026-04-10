@@ -12,7 +12,7 @@ import (
 )
 
 // moderationService implements the ports.ModerationService interface.
-// It handles community management, including greeting new members, 
+// It handles community management, including greeting new members,
 // issuing warnings to enforce rules, and managing restrictive modes like Read-Only.
 type moderationService struct {
 	repo ports.ModerationRepository
@@ -87,4 +87,3 @@ func (s *moderationService) IsRoModeActive(ctx context.Context, chatID int64) bo
 	active, _ := s.repo.GetRoMode(ctx, chatID)
 	return active
 }
-

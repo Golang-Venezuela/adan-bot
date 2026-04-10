@@ -82,4 +82,3 @@ func (r *memoryModerationRepo) GetRoMode(ctx context.Context, chatID int64) (boo
 
 	return r.roMode[chatID], nil
 }
-
