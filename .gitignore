@@ -185,3 +185,8 @@ tmp/*
 reports
 adan-bot
 
+
+# Local data for db
+local.db
+
+

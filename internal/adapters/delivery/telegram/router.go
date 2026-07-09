@@ -43,6 +43,47 @@ func RegisterHandlers(bot *tele.Bot, svc ports.BotService) {
 		return c.Send(svc.HandleStatus(ctx))
 	})
 
+	bot.Handle("/micumple", func(c tele.Context) error {
+		ctx := context.Background()
+		userID := c.Sender().ID
+		args := c.Args()
+		if len(args) == 0 {
+			return c.Send("Por favor ingresa tu fecha de cumpleaños en formato DD/MM.\nEjemplo: `/micumple 15/10`", tele.ModeMarkdown)
+		}
+
+		dateStr := args[0]
+		slog.Info("Executing /micumple", slog.String("user_id", logger.ObfuscateID(userID)), slog.String("date", dateStr))
+
+		msg, err := svc.HandleSetBirthday(ctx, userID, dateStr)
+		if err != nil {
+			slog.Error("Error in HandleSetBirthday", slog.Any("error", err))
+		}
+		return c.Send(msg)
+	})
+
+	bot.Handle("/borrarcumple", func(c tele.Context) error {
+		ctx := context.Background()
+		userID := c.Sender().ID
+		slog.Info("Executing /borrarcumple", slog.String("user_id", logger.ObfuscateID(userID)))
+
+		msg, err := svc.HandleRemoveBirthday(ctx, userID)
+		if err != nil {
+			slog.Error("Error in HandleRemoveBirthday", slog.Any("error", err))
+		}
+		return c.Send(msg)
+	})
+
+	bot.Handle("/cumples_mes", func(c tele.Context) error {
+		ctx := context.Background()
+		slog.Info("Executing /cumples_mes")
+
+		msg, err := svc.HandleGetBirthdaysOfMonth(ctx)
+		if err != nil {
+			slog.Error("Error in HandleGetBirthdaysOfMonth", slog.Any("error", err))
+		}
+		return c.Send(msg, tele.ModeHTML)
+	})
+
 	// Fallback handler for unmapped textual commands.
 	bot.Handle(tele.OnText, func(c tele.Context) error {
 		if strings.HasPrefix(c.Text(), "/") {

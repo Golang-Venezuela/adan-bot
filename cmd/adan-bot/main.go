@@ -15,6 +15,8 @@ import (
 
 	"github.com/Golang-Venezuela/adan-bot/internal/adapters/delivery/telegram"
 	"github.com/Golang-Venezuela/adan-bot/internal/adapters/repository"
+	sqlite "github.com/Golang-Venezuela/adan-bot/internal/adapters/repository/sqlite"
+	"github.com/Golang-Venezuela/adan-bot/internal/core/ports"
 	"github.com/Golang-Venezuela/adan-bot/internal/core/services"
 	"github.com/Golang-Venezuela/adan-bot/internal/infra/config"
 	"github.com/Golang-Venezuela/adan-bot/internal/infra/logger"
@@ -64,10 +66,22 @@ func Main() error {
 
 	slog.Info("Authorized", slog.String("account", logger.Obfuscate(bot.Me.Username)))
 
+	// Initialize Database dependencies
+	dbUrl := config.Getenv("TURSO_DB_URL", "file:local.db")
+	userRepo, err := sqlite.NewUserRepository(dbUrl)
+	if err != nil {
+		return fmt.Errorf("cannot initialize database: %w", err)
+	}
+	botSvc := services.NewBotService(userRepo)
+	telegram.RegisterHandlers(bot, botSvc)
+
 	// Initialize Moderation dependencies
 	modRepo := repository.NewMemoryModerationRepo()
 	modSvc := services.NewModerationService(modRepo)
 	telegram.RegisterModerationHandlers(bot, modSvc)
+
+	// Start background birthday scheduler
+	startBirthdayScheduler(bot, botSvc)
 
 	// Inject a global middleware to intercept and log incoming messages for tracing and observability.
 	bot.Use(func(next tele.HandlerFunc) tele.HandlerFunc {
@@ -156,4 +170,54 @@ func main() {
 		slog.Error("Fatal runtime error exiting", slog.Any("error", err))
 		os.Exit(1)
 	}
+}
+
+// startBirthdayScheduler runs a background worker that checks birthdays daily.
+func startBirthdayScheduler(bot *tele.Bot, svc ports.BotService) {
+	chatIDStr := config.Getenv("TELEGRAM_GROUP_CHAT_ID", "")
+	if chatIDStr == "" {
+		slog.Warn("TELEGRAM_GROUP_CHAT_ID is not configured; birthday announcements will not be sent")
+		return
+	}
+
+	var chatID int64
+	if _, err := fmt.Sscan(chatIDStr, &chatID); err != nil {
+		slog.Error("Invalid TELEGRAM_GROUP_CHAT_ID format", slog.String("value", chatIDStr), slog.Any("error", err))
+		return
+	}
+
+	go func() {
+		loc, err := time.LoadLocation("America/Caracas")
+		if err != nil {
+			loc = time.UTC
+		}
+
+		for {
+			now := time.Now().In(loc)
+			nextRun := time.Date(now.Year(), now.Month(), now.Day(), 8, 0, 0, 0, loc)
+			if now.After(nextRun) {
+				nextRun = nextRun.Add(24 * time.Hour)
+			}
+
+			duration := time.Until(nextRun)
+			slog.Info("Birthday scheduler scheduled next check", slog.Time("next_run", nextRun), slog.Duration("wait_duration", duration))
+
+			time.Sleep(duration)
+
+			ctx := context.Background()
+			msg, err := svc.HandleTodayBirthdays(ctx)
+			if err != nil {
+				slog.Error("Error checking today's birthdays in scheduler", slog.Any("error", err))
+				continue
+			}
+
+			if msg != "" {
+				slog.Info("Sending daily birthday congratulations message")
+				_, err = bot.Send(&tele.Chat{ID: chatID}, msg, tele.ModeHTML)
+				if err != nil {
+					slog.Error("Failed to send birthday greetings message", slog.Any("error", err))
+				}
+			}
+		}
+	}()
 }

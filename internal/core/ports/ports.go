@@ -15,6 +15,10 @@ import (
 type UserRepository interface {
 	SaveUser(ctx context.Context, user domain.User) error
 	GetUserByID(ctx context.Context, id int64) (*domain.User, error)
+	SetBirthday(ctx context.Context, userID int64, day, month int) error
+	RemoveBirthday(ctx context.Context, userID int64) error
+	GetBirthdaysByDayAndMonth(ctx context.Context, day, month int) ([]domain.User, error)
+	GetBirthdaysByMonth(ctx context.Context, month int) ([]domain.User, error)
 }
 
 // BotService defines the core business operations and use cases for the Adan Bot.
@@ -23,6 +27,10 @@ type BotService interface {
 	HandleStartHelp(ctx context.Context) string
 	HandleHola(ctx context.Context, userID int64, username, firstName, lastName string) (string, error)
 	HandleStatus(ctx context.Context) string
+	HandleSetBirthday(ctx context.Context, userID int64, dateStr string) (string, error)
+	HandleRemoveBirthday(ctx context.Context, userID int64) (string, error)
+	HandleGetBirthdaysOfMonth(ctx context.Context) (string, error)
+	HandleTodayBirthdays(ctx context.Context) (string, error)
 }
 
 // ModerationRepository handles persistence of moderation records.
