@@ -1,4 +1,3 @@
-DATE := $(shell date +%Y)
 
 help: ## Display this help message, listing all available targets and their descriptions.
 	@awk 'BEGIN {FS = ":.*##"; printf "\n\033[1;34m${DOCKER_NAMESPACE}\033[0m\tGolangVzla - Adan Bot\n \n\033[1;32mUsage:\033[0m\n  make \033[1;34m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[1;34m%-20s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1;33m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -7,7 +6,7 @@ help: ## Display this help message, listing all available targets and their desc
 ## Project Metadata & Defaults
 GO ?= go
 GOPATH ?= $(shell $(GO) env GOPATH)
-module := $(shell $(GO) list -m)
+module = $(shell $(GO) list -m)
 PROJECT ?= $(notdir $(module))
 DOCKER_IMAGE ?= go-ve/adan-bot
 UID ?= $(shell id -u)
@@ -23,10 +22,12 @@ export
 SUPPORTED_ENGINES := docker podman
 engine_arg := $(filter $(SUPPORTED_ENGINES),$(MAKECMDGOALS))
 ifneq ($(engine_arg),)
-  CONTAINER_ENGINE = $(word 1,$(engine_arg))
+  CONTAINER_ENGINE := $(word 1,$(engine_arg))
   $(eval $(engine_arg):;@:)
 else
-  CONTAINER_ENGINE ?= $(shell command -v podman 2> /dev/null || command -v docker 2> /dev/null || echo docker)
+  ifndef CONTAINER_ENGINE
+    CONTAINER_ENGINE := $(shell command -v podman 2> /dev/null || command -v docker 2> /dev/null || echo docker)
+  endif
 endif
 
 CPUPROFILE ?= cpu.prof
@@ -42,15 +43,16 @@ ifeq ($(findstring podman,$(CONTAINER_ENGINE)),podman)
     # Podman requires --userns=keep-id to map current user nicely without file permission issues
     USER_ARGS ?= --userns=keep-id -e HOME=/
 else
-    CPU_LIMIT_ARGS ?= --cpus $(BUILD_CPU_LIMIT)
+    # We defer the check for the --cpus flag until CPU_LIMIT_ARGS is expanded at target execution time.
+    # This prevents running a Docker/Podman subprocess during Makefile parsing (e.g. for 'make help' or 'make clean').
+    CPU_LIMIT_ARGS = $(shell $(CONTAINER_ENGINE) build --help 2>&1 | grep -q -- --cpus && echo "--cpus $(BUILD_CPU_LIMIT)")
     # Docker uses the simple uid flag
     USER_ARGS ?= -u "$(UID)" -e HOME=/
 endif
 
 ## File Lists
-goFiles := $(shell find . -iname "*.go" -type f | grep -v "/_" | grep -v "^\./vendor")
-goFilesSrc := $(shell $(GO) list -f '{{ range .GoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}' ./...)
-goFilesTest := $(shell $(GO) list -f "{{ range .TestGoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}{{ range .XTestGoFiles }}{{ $$.Dir }}/{{ . }} {{ end }}" ./...)
+# Defer list generation to avoid slowing down make commands that do not format/lint.
+goFiles = $(shell find . -iname "*.go" -type f | grep -v "/_" | grep -v "^\./vendor")
 
 ##@ Build & Clean
 .PHONY: all build clean clean-dev
@@ -119,7 +121,7 @@ test-race: ## Run tests with race detector
 .PHONY: benchmark benchmark-check benchmark-web
 BENCHMARK_COUNT ?= 1
 BENCHMARK_FILE ?= benchmarks-dev.txt
-benchmarkWebFile := $(shell mktemp -u)-$(PROJECT).html
+benchmarkWebFile = $(shell mktemp -u)-$(PROJECT).html
 
 benchmark: ## Run benchmarks
 	$(GO) test -v -run none -bench "$(TARGET_FUNC)" -benchmem -count $(BENCHMARK_COUNT) $(profileFlags) "$(TARGET_PKG)" | tee "$(BENCHMARK_FILE)"
