@@ -5,7 +5,7 @@ go 1.26.1
 require github.com/joho/godotenv v1.5.1
 
 require (
-	github.com/aws/aws-lambda-go v1.54.0
+	github.com/aws/aws-lambda-go v1.55.0
 	github.com/awslabs/aws-lambda-go-api-proxy v0.16.2
 	github.com/tursodatabase/libsql-client-go v0.0.0-20251219100830-236aa1ff8acc
 	gopkg.in/telebot.v4 v4.0.0-beta.10
