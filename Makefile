@@ -112,9 +112,11 @@ ifneq "$(notdir $(TARGET_PKG))" "..."
 endif
 
 test: ## Run tests
+	@mkdir -p $(dir $(COVERAGE_FILE))
 	@$(GO) test -v -run "$(TARGET_FUNC)" -coverprofile "$(COVERAGE_FILE)" $(profileFlags) "$(TARGET_PKG)"
 
 test-race: ## Run tests with race detector
+	@mkdir -p $(dir $(COVERAGE_FILE))
 	@$(GO) test -v -race -run "$(TARGET_FUNC)" -coverprofile "$(COVERAGE_FILE)" $(profileFlags) "$(TARGET_PKG)"
 
 ##@ Benchmarking

@@ -6,6 +6,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strings"
@@ -67,6 +68,44 @@ func init() {
 	// and triggers synchronous processing. We avoid using bot.Start() or tele.Webhook
 	// because the standard Poller initializes channels and goroutines that are not well-suited for Lambda.
 	botHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Trigger endpoint for daily birthdays check (e.g. AWS API Gateway trigger from cron)
+		if r.URL.Path == "/tasks/check-birthdays" {
+			chatIDStr := config.Getenv("TELEGRAM_GROUP_CHAT_ID", "")
+			if chatIDStr == "" {
+				slog.Error("TELEGRAM_GROUP_CHAT_ID is not configured")
+				http.Error(w, "Group chat ID not configured", http.StatusInternalServerError)
+				return
+			}
+			var chatID int64
+			if _, err := fmt.Sscan(chatIDStr, &chatID); err != nil {
+				slog.Error("Invalid TELEGRAM_GROUP_CHAT_ID format", slog.Any("error", err))
+				http.Error(w, "Invalid Group Chat ID configuration", http.StatusInternalServerError)
+				return
+			}
+
+			slog.Info("Triggering serverless birthday check")
+			msg, err := botSvc.HandleTodayBirthdays(context.Background())
+			if err != nil {
+				slog.Error("Error checking birthdays in serverless handler", slog.Any("error", err))
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			if msg != "" {
+				slog.Info("Sending serverless daily birthday congratulations message")
+				_, err = bot.Send(&tele.Chat{ID: chatID}, msg, tele.ModeHTML)
+				if err != nil {
+					slog.Error("Failed to send serverless birthday greetings message", slog.Any("error", err))
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+			}
+
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Birthdays checked successfully"))
+			return
+		}
+
 		var update tele.Update
 		if err := json.NewDecoder(r.Body).Decode(&update); err != nil {
 			slog.Error("Could not decode update", slog.Any("error", err))
